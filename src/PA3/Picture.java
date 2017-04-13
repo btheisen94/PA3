@@ -1,6 +1,6 @@
-
+package PA3;
 /******************************************************************************
- *  Compilation:  javac Picture.java
+ *  Compilatmainion:  javac Picture.java
  *  Execution:    java Picture imagename
  *  Dependencies: none
  *
