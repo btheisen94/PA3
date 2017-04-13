@@ -1,7 +1,6 @@
 package PA3;
 
 import java.util.ArrayList;
-import java.util.Stack;
 
 public class DynamicProgramming {
 
@@ -19,10 +18,7 @@ public class DynamicProgramming {
 		// If M has n rows, then return list has 2n entries
 		// Must be iterative, not recursive, or use memoization
 		ArrayList<Integer> ret = new ArrayList<Integer>();
-		int currentCost = 0; // Used for the dynamice programming paradigm
-								// Holds the current cost so that The entire
-								// cost
-								// does not need to be computed each time
+
 		int[][] temp = M;
 		int n = M.length; // Holds the number of rows in the matrix
 		int m = M[0].length; // Holds the number of columns in the matrix
@@ -62,9 +58,9 @@ public class DynamicProgramming {
 		// We are forming the vertical cut from the bottom up, so the
 		// indices need to be added to the ArrayList at the head of the
 		// list in order to have the right order
-		
-		ret.add(0,lowestIndex);
-		ret.add(0,n-1);
+
+		ret.add(0, lowestIndex);
+		ret.add(0, n - 1);
 		int j = lowestIndex;
 		// Trace back lowest cost path getting the indices of the path
 		for (int i = n - 1; i > 0; i--) {
@@ -73,13 +69,13 @@ public class DynamicProgramming {
 				min = Math.min(temp[i - 1][j], temp[i - 1][j + 1]);
 				if (min == temp[i - 1][j]) {
 					ret.add(0, j);
-					ret.add(0,i-1);
+					ret.add(0, i - 1);
 
 				} else {
 					j = j + 1;
 					ret.add(0, j);
-					ret.add(0,i-1);
-					
+					ret.add(0, i - 1);
+
 				}
 
 			} else if ((j + 1) == m) {
@@ -148,9 +144,61 @@ public class DynamicProgramming {
 			 * } }
 			 */
 
+	/**
+	 * Function to find the optimal allignment of strings x and y
+	 * 
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	public static String stringAlignment(String x, String y) {
+		int n = x.length();
+		int m = y.length();
+		int lowestCost = 0;
+		int lowestCostIndex = 0;
+		String temp = y;
+		if (n == m) {
+			// If the strings are the same length, then the allignment will
+			// never be better than it is.
+			return y;
+		} else {
+			for (int i = 0; i < n - m; i++) {
+				for (int j = 0; j <= y.length(); j++) {
+					temp = y;
+					
+					temp = temp.substring(0, j) + "$" + temp.substring(j, temp.length());
+					System.out.println(temp);
+					
+					int cost = 0;
+					for (int k = 0; k < temp.length(); k++) {
+						cost += penalty(x.charAt(k), temp.charAt(k));
+					}
+					if (j == 0) {
+						lowestCost = cost;
+						lowestCostIndex = j;
+					} else if (cost < lowestCost) {
+						lowestCost = cost;
+						lowestCostIndex = j;
+					}
+				}
+				y = y.substring(0, lowestCostIndex) + "$" + y.substring(lowestCostIndex, y.length());
 
-		return "";
+			}
+			
+		}
+		
+		System.out.println(lowestCost);
+		return y;
+	}
+
+	private static int penalty(char a, char b) {
+		if (a == b) {
+			return 0;
+		} else if ((a == '$') || (b == '$')) {
+			return 4;
+		} else {
+			return 2;
+		}
 	}
 
 	public static void main(String args[]) {
@@ -160,6 +208,6 @@ public class DynamicProgramming {
 		ArrayList<Integer> testList = new ArrayList<Integer>();
 		testList = minCostVC(test);
 		System.out.println(testList.toString());
-
+		System.out.println(stringAlignment("xcdlxa","cla"));
 	}
 }
