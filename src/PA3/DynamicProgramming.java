@@ -24,7 +24,7 @@ public class DynamicProgramming {
 								// cost
 								// does not need to be computed each time
 		int[][] temp = M;
-		int n = M.length;    // Holds the number of rows in the matrix
+		int n = M.length; // Holds the number of rows in the matrix
 		int m = M[0].length; // Holds the number of columns in the matrix
 		int min;
 
@@ -58,70 +58,64 @@ public class DynamicProgramming {
 				lowest = temp[n - 1][j];
 			}
 		}
-
-		// System.out.println(j);
-
-		// The path will be traced bottom up in the matrix so we will use a
-		// stack
-		// and then pop off the stack to form the path in the ArrayList
-		Stack<Integer> path = new Stack<Integer>();
-		path.push(lowestIndex);
-		path.push(n - 1);
+		System.out.println(lowest);
+		// We are forming the vertical cut from the bottom up, so the
+		// indices need to be added to the ArrayList at the head of the
+		// list in order to have the right order
+		
+		ret.add(0,lowestIndex);
+		ret.add(0,n-1);
 		int j = lowestIndex;
 		// Trace back lowest cost path getting the indices of the path
 		for (int i = n - 1; i > 0; i--) {
 			if ((j - 1) < 0) {
 				// Upper left is out of bounds
 				min = Math.min(temp[i - 1][j], temp[i - 1][j + 1]);
-				if(min == temp[i-1][j]){
-					path.push(j);
-					System.out.println("x: " + (i-1) + "y: " + j);
-					path.push(i-1);
-					//j = j;
+				if (min == temp[i - 1][j]) {
+					ret.add(0, j);
+					ret.add(0,i-1);
+
 				} else {
-					path.push(j+1);
-					System.out.println("x: " + (i-1) + "y: " + j);
-					path.push(i-1);
 					j = j + 1;
+					ret.add(0, j);
+					ret.add(0,i-1);
+					
 				}
-				
+
 			} else if ((j + 1) == m) {
 				// Upper right is out of bounds
 				min = Math.min(temp[i - 1][j], temp[i - 1][j - 1]);
-				if(min == temp[i-1][j]){
-					path.push(j);
-					System.out.println("x: " + (i-1) + "y: " + j);
-					path.push(i-1);
-					//j = j;
+				if (min == temp[i - 1][j]) {
+					ret.add(0, j);
+					ret.add(0, i - 1);
+
 				} else {
-					path.push(j-1);
-					path.push(i-1);
 					j = j - 1;
+					ret.add(0, j);
+					ret.add(0, i - 1);
+
 				}
-				
+
 			} else {
 				// All options above are valid
-				min = Math.min(temp[i + 1][j - 1], Math.min(temp[i + 1][j], temp[i + 1][j + 1]));
-				if(min == temp[i-1][j-1]){
-					path.push(j-1);
-					path.push(i-1);
-					//j = j;
-				} else if(min == temp[i-1][j+1]){
-					path.push(j+1);
-					path.push(i-1);
+				min = Math.min(temp[i - 1][j - 1], Math.min(temp[i - 1][j], temp[i - 1][j + 1]));
+				if (min == temp[i - 1][j - 1]) {
+					j = j - 1;
+					ret.add(0, j);
+					ret.add(0, i - 1);
+
+				} else if (min == temp[i - 1][j + 1]) {
 					j = j + 1;
+					ret.add(0, j);
+					ret.add(0, i - 1);
+
 				} else {
-					path.push(j);
-					path.push(i-1);
+					ret.add(0, j);
+					ret.add(0, i - 1);
+
 				}
 			}
 
-		}
-
-		// Pop items off of the stack and into the ArrayList to get the vertical
-		// cut
-		while (!path.isEmpty()) {
-			ret.add(path.pop());
 		}
 
 		return ret;
@@ -161,13 +155,11 @@ public class DynamicProgramming {
 
 	public static void main(String args[]) {
 
-		int[][] test = { { 1, 3, 1 }, 
-						 { 9, 2, 3 }, 
-						 { 11, 4, 1 } };
+		int[][] test = { { 7, 3, 6, 2, 3 }, { 9, 7, 3, 6, 7 }, { 11, 4, 8, 9, 10 } };
 
 		ArrayList<Integer> testList = new ArrayList<Integer>();
 		testList = minCostVC(test);
 		System.out.println(testList.toString());
-		
+
 	}
 }
