@@ -54,7 +54,7 @@ public class DynamicProgramming {
 				lowest = temp[n - 1][j];
 			}
 		}
-		System.out.println(lowest);
+		// System.out.println(lowest);
 		// We are forming the vertical cut from the bottom up, so the
 		// indices need to be added to the ArrayList at the head of the
 		// list in order to have the right order
@@ -167,7 +167,7 @@ public class DynamicProgramming {
 					temp = y;
 					
 					temp = temp.substring(0, j) + "$" + temp.substring(j, temp.length());
-					System.out.println(temp);
+					//System.out.println(temp);
 					
 					int cost = 0;
 					for (int k = 0; k < temp.length(); k++) {
@@ -203,11 +203,16 @@ public class DynamicProgramming {
 
 	public static void main(String args[]) {
 
-		int[][] test = { { 7, 3, 6, 2, 3 }, { 9, 7, 3, 6, 7 }, { 11, 4, 8, 9, 10 } };
+		int[][] test = { { 7, 3, 6, 2, 3 }, 
+						 { 9, 7, 3, 6, 7 }, 
+						 { 11, 4, 8, 9, 10 } };
 
 		ArrayList<Integer> testList = new ArrayList<Integer>();
 		testList = minCostVC(test);
 		System.out.println(testList.toString());
-		System.out.println(stringAlignment("xcdlxa","cla"));
+		String tester = "xclxada";
+		String testee = "xdad";
+		System.out.println(tester);
+		System.out.println(stringAlignment(tester, testee));
 	}
 }
