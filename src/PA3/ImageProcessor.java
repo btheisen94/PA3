@@ -36,9 +36,6 @@ public class ImageProcessor {
 		
 		this.yImportance = new int[this.picMatrix.length][this.picMatrix[0].length];
 		
-/*		System.out.println("Current Height: " + this.picMatrix.length);
-		System.out.println("Current  Width: " + this.picMatrix[0].length);*/
-		
 		for(int i = 0; i < this.picMatrix.length; i++){
 			for(int j  = 0; j < this.picMatrix[0].length; j++){
 				if(i == 0){
@@ -55,9 +52,6 @@ public class ImageProcessor {
 	private void xImportance(){
 		
 		this.xImportance = new int[this.picMatrix.length][this.picMatrix[0].length];
-		
-/*		System.out.println("Current Height: " + this.picMatrix.length);
-		System.out.println("Current  Width: " + this.picMatrix[0].length);*/
 		
 		for(int i = 0; i < this.picMatrix.length; i++){
 			for(int j  = 0; j < this.picMatrix[0].length; j++){
@@ -77,9 +71,6 @@ public class ImageProcessor {
 		
 		this.I = new int[this.picMatrix.length][this.picMatrix[0].length];
 		
-/*		System.out.println("Current Height: " + this.picMatrix.length);
-		System.out.println("Current  Width: " + this.picMatrix[0].length);*/
-		
 		for(int i = 0; i < this.I.length; i++){
 			for(int j  = 0; j < this.I[0].length; j++){
 				this.I[i][j] = xImportance[i][j] + yImportance[i][j];
@@ -89,9 +80,9 @@ public class ImageProcessor {
 	
 	//Get the distance between the colors of the two pixels
 	private int Dist(Color p, Color q){
-		int red = (int) Math.pow((p.getRed() - q.getRed()), 2);
-		int green = (int) Math.pow((p.getGreen() - q.getGreen()), 2);
-		int blue = (int) Math.pow((p.getBlue() - q.getBlue()), 2);
+		int red = (p.getRed() - q.getRed())*(p.getRed() - q.getRed());
+		int green = (p.getGreen() - q.getGreen())*(p.getGreen() - q.getGreen());
+		int blue = (p.getBlue() - q.getBlue())*(p.getBlue() - q.getBlue());
 		
 		return red + green + blue;
 	}
@@ -99,12 +90,15 @@ public class ImageProcessor {
 	private void modifyPicMatrix(ArrayList<Integer> cut){
 		
 		Color[][] newPic = new Color[this.picMatrix.length][this.picMatrix[0].length - 1];
-		for(int i = 0; i < newPic.length; i++){
+		for(int i = 0; i < newPic.length*2; i+=2){
+			int row = cut.get(i);
+			int col = cut.get(i+1);
 			for(int j = 0; j < newPic[0].length; j++){
-				if(j < cut.get(i+1)){
-					newPic[i][j] = this.picMatrix[i][j];
-				} else if(j >= cut.get(i+1)){
-					newPic[i][j] = this.picMatrix[i][j+1];
+				
+				if(j < col){
+					newPic[row][j] = this.picMatrix[row][j];
+				} else {
+					newPic[row][j] = this.picMatrix[row][j+1];
 				}
 			}
 		}
@@ -119,7 +113,6 @@ public class ImageProcessor {
 				newPic.set(j, i, reducedPic[i][j]);
 			}
 		}
-		
 		
 		return newPic;
 	}
@@ -150,11 +143,11 @@ public class ImageProcessor {
 	public static void main(String args[]){
 		// Create image processor object
 		// Pass in image.
-		ImageProcessor image = new ImageProcessor("/home/btheisen/workspace/PA3/PA3/resize.jpg");
+		ImageProcessor image = new ImageProcessor("/home/btheisen/workspace/PA3/PA3/Original.jpg");
 		// Show image
 		image.picture.show();
 		//Call reduce image
-		Picture reduced = image.reduceWidth(0.000375);
+		Picture reduced = image.reduceWidth(0.5);
 		// Show image
 		reduced.show();
 	}

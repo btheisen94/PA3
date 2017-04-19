@@ -81,12 +81,11 @@ public class DynamicProgramming {
 			} else if ((j + 1) == m) {
 				// Upper right is out of bounds
 				min = Math.min(temp[i - 1][j], temp[i - 1][j - 1]);
-				if (min == temp[i - 1][j]) {
+				if (min == temp[i - 1][j - 1]) {
+					j = j - 1;
 					ret.add(0, j);
 					ret.add(0, i - 1);
-
 				} else {
-					j = j - 1;
 					ret.add(0, j);
 					ret.add(0, i - 1);
 
@@ -100,12 +99,13 @@ public class DynamicProgramming {
 					ret.add(0, j);
 					ret.add(0, i - 1);
 
-				} else if (min == temp[i - 1][j + 1]) {
-					j = j + 1;
+				} else if (min == temp[i - 1][j]) {
+					
 					ret.add(0, j);
 					ret.add(0, i - 1);
 
 				} else {
+					j = j + 1;
 					ret.add(0, j);
 					ret.add(0, i - 1);
 
